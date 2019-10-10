@@ -10,3 +10,4 @@ Write your notes, tests done, preliminary results, etc.
 + Submitted predictions with all methids implemented so far (GD adapting step, SGD adapting step, Lsq, RR), got ~65% accuracy.
 + No adapting the step yields comparable results.
 + Saving all weight from SGD and choosing the ones with the least loss?
++ TODO: Add offset to feature matrix (column of 1's)
