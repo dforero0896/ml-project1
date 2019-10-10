@@ -11,6 +11,7 @@ Write your notes, tests done, preliminary results, etc.
 + No adapting the step yields comparable results.
 + Saving all weight from SGD and choosing the ones with the least loss?
 + TODO: Add offset to feature matrix (column of 1's)
+
 ## oct 10
 
 + No cleaning.
