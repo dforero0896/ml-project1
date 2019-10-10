@@ -11,3 +11,18 @@ Write your notes, tests done, preliminary results, etc.
 + No adapting the step yields comparable results.
 + Saving all weight from SGD and choosing the ones with the least loss?
 + TODO: Add offset to feature matrix (column of 1's)
+## oct 10
+
++ No cleaning.
++ Offset added, also to test data.
++ No adapting gamma.
+
+Test results:
+
+
+| Method | Accuracy |
+|--------|----------|
+| GD     | 0.744    |
+| SGD    | 0.648    |
+| LSQ    | 0.748    |
+| RR     | 0.744    |
