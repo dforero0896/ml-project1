@@ -108,8 +108,9 @@ def build_k_indices(y, k_fold, seed):
     return np.array(k_indices)
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    phi = [np.array(x)**j for j in range(degree+1)]
-    return phi.T
+    phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
+    phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
+    return phi_off
 def cross_validation(y, x, k_indices, k, lambda_, degree):
     """return the loss of ridge regression."""
     # get k'th subgroup in test, others in train
@@ -119,11 +120,9 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     x_train = x[id_train]
     y_test = y[id_test]
     y_train = y[id_train]
-    tx_train = x_train
-    tx_test = x_test
     # form data with polynomial degree
-    #tx_train = build_poly(x_train, degree)
-    #tx_test = build_poly(x_test, degree)
+    tx_train = build_poly(x_train, degree)
+    tx_test = build_poly(x_test, degree)
     # ridge regression
     weight, loss_tr = ridge_regression(y_train, tx_train, lambda_)
     # calculate the loss for train and test data
@@ -185,7 +184,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
             # update w by gradient
             w = w - gamma * gradient
             ws.append(w)
-            losses.append(loss)
+            losses.append(compute_loss(y, tx, w))
             if pr == True and n_iter%100 == 0:
                 print("SGD ({bi}/{ti}): loss={l}".format(
                 bi=n_iter, ti=max_iters - 1, l=loss))
