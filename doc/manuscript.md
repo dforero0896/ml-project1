@@ -27,3 +27,14 @@ Test results:
 | SGD    | 0.648    |
 | LSQ    | 0.748    |
 | RR     | 0.744    |
+
+## oct 17
+
+Tested with feature expansion up to degree 2.
+
+| Method | Accuracy |
+|--------|----------|
+| GD     | 0.763    |
+| LSQ    | 0.425    |
+| RR     | 0.763    |
+

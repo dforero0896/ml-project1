@@ -150,10 +150,13 @@ def add_offset_column(x):
     return np.c_[np.ones(x.shape[0]), x]
 
 #ML Implementations
-def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma = False, pr = False):
+def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma = False, pr = False, accel = False):
     """Linear regression using Gradient descent algorithm."""
     w = initial_w.astype(float)
     gamma_0 = gamma
+    ws = []
+    ws.append(w)
+    w_bar = w
     for n_iter in range(max_iters):
         # compute gradient and loss
         gradient = compute_gradient(y, tx, w, kind=kind)
@@ -161,7 +164,12 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
-        w = w - gamma * gradient
+        if accel:
+            w = w_bar - gamma * compute_gradient(y, tx, w_bar, kind=kind)
+            w_bar = w + ((n_iter)/(n_iter + 1)) * (w - ws[-1])
+        else:
+            w = w - gamma * gradient
+        ws.append(w)
         if pr == True and n_iter%100 == 0:
             print("GD ({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
@@ -192,6 +200,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
         w = ws[np.argmin(losses)]
         loss = min(losses)
     return w, loss
+    
 def least_squares(y, tx):
     """calculate the least squares solution."""
     gram_matrix = tx.T.dot(tx)
@@ -232,7 +241,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             # compute gradient, loss and hessian
-            gradient = compute_gradient_logistic(y, tx, w)
+            gradient = compute_gradient_logistic(new_y, new_tx, w)
             loss = compute_loss_logistic(y, tx, w)
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
