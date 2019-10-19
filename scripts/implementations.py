@@ -3,7 +3,6 @@ import numpy as np
 '''
 Implementation functions for various ML algorithms
 '''
-##Remove this line. It is just for a test
 #Miscellaneous functions
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
@@ -137,7 +136,7 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
 
 
 def compute_loss_logistic_new(y, tx, w):
-    loss = sum(2*np.log(1 + np.exp(tx.dot(w)))-tx.dot(w)) - y.T.dot(tx.dot(w))
+    loss = np.sum(2*np.log(1 + np.exp(tx.dot(w)))-tx.dot(w)) - y.T.dot(tx.dot(w))
     return loss
 
 def compute_gradient_logistic_new(y, tx, w):
@@ -145,11 +144,11 @@ def compute_gradient_logistic_new(y, tx, w):
     return 2*tx.T.dot(sigmoid(tx.dot(w))) - tx.T.dot(y) - tx.T.dot(np.ones(len(y)))
 
 def compute_loss_logistic(y, tx, w):
-    loss = sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
+    loss = np.sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
     return loss
 def sigmoid(t):
     """apply sigmoid function on t."""
-    return np.exp(t)/(1 + np.exp(t))
+    return 1./(1. + np.exp(-t))
 def compute_gradient_logistic(y, tx, w):
     """Compute the gradient."""
     return tx.T.dot(sigmoid(tx.dot(w))) - tx.T.dot(y)
@@ -228,7 +227,7 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new = False):
     """return the loss, gradient, and hessian."""
     w = initial_w
     gamma_0 = gamma
@@ -238,8 +237,12 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
     w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
-        gradient = compute_gradient_logistic(y, tx, w)
-        loss = compute_loss_logistic(y, tx, w)
+        if new:
+            gradient = compute_gradient_logistic_new(y, tx, w)
+            loss = compute_loss_logistic_new(y, tx, w)
+        else:
+            gradient = compute_gradient_logistic(y, tx, w)
+            loss = compute_loss_logistic(y, tx, w)
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
@@ -255,15 +258,19 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     return w, loss
-def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False):
+def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False, new=False):
     """return the loss, gradient, and hessian."""
     w = initial_w
     gamma_0 = gamma
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             # compute gradient, loss and hessian
-            gradient = compute_gradient_logistic(new_y, new_tx, w)
-            loss = compute_loss_logistic(y, tx, w)
+            if new:
+                gradient = compute_gradient_logistic_new(y, tx, w)
+                loss = compute_loss_logistic_new(y, tx, w)
+            else:
+                gradient = compute_gradient_logistic(y, tx, w)
+                loss = compute_loss_logistic(y, tx, w)
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
             # update w by gradient
@@ -274,7 +281,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
     return w, loss
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new=False):
     """return the loss, gradient, and hessian."""
     w = initial_w
     gamma_0 = gamma
@@ -284,8 +291,12 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
     w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
-        loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
-        gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
+        if new:
+            loss = compute_loss_logistic_new(y, tx, w)   + lambda_ * sum(w*w)/2
+            gradient = compute_gradient_logistic_new(y, tx, w) + lambda_ * w
+        else:
+            loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
+            gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
