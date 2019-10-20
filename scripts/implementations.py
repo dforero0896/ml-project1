@@ -111,21 +111,16 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 def build_poly(x, degree):
-<<<<<<< HEAD
     """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
     phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
     return phi_off
 def cross_validation(y, x, k_indices, k, lambda_, degree, clean=True):
     """Returns the train and test loss as well as the test accuracy for ridge regression."""
-=======
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
     phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
     return phi_off
-def cross_validation(y, x, k_indices, k, lambda_, degree):
-    """return the loss of ridge regression."""
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
     # get k'th subgroup in test, others in train
     id_test = k_indices[k]
     id_train = k_indices[~(np.arange(k_indices.shape[0]) == k)].reshape(-1)
@@ -133,7 +128,6 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     x_train = x[id_train]
     y_test = y[id_test]
     y_train = y[id_train]
-<<<<<<< HEAD
     #Clean
     if clean:
         y_train, x_train = clean_data(y_train, x_train)
@@ -144,11 +138,9 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     # Define feature matrix
     tx_train = build_poly(x_train_std, degree)
     tx_test = build_poly(x_test_std, degree)
-=======
     # form data with polynomial degree
     tx_train = build_poly(x_train, degree)
     tx_test = build_poly(x_test, degree)
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
     # ridge regression
     weight, loss_tr = ridge_regression(y_train, tx_train, lambda_)
     # calculate the loss for train and test data
@@ -156,11 +148,10 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     accuracy = accuracy_ratio(predict_labels(weight, tx_test), y_test)
     return loss_tr, loss_te, accuracy
 
-<<<<<<< HEAD
+
 def compute_loss_logistic(y, tx, w):
     '''Compute the loss for logistic regression.'''
     loss = sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
-=======
 
 def compute_loss_logistic_new(y, tx, w):
     loss = np.sum(2*np.log(1 + np.exp(tx.dot(w)))-tx.dot(w)) - y.T.dot(tx.dot(w))
@@ -172,7 +163,6 @@ def compute_gradient_logistic_new(y, tx, w):
 
 def compute_loss_logistic(y, tx, w):
     loss = np.sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
     return loss
 def sigmoid(t):
     """apply sigmoid function on t."""
@@ -257,13 +247,9 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
-<<<<<<< HEAD
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
-    """Returns the weights and loss for the regularized logistic regression using GD."""
-=======
+    
 def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new = False):
-    """return the loss, gradient, and hessian."""
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
+    """Returns the weights and loss for the regularized logistic regression using GD."""
     w = initial_w
     gamma_0 = gamma
     losses = []
@@ -271,11 +257,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
     ws.append(w)
     w_bar = w
     for n_iter in range(max_iters):
-<<<<<<< HEAD
-        # compute gradient
-        gradient = compute_gradient_logistic(y, tx, w)
-        loss = compute_loss_logistic(y, tx, w)
-=======
         # compute gradient, loss and hessian
         if new:
             gradient = compute_gradient_logistic_new(y, tx, w)
@@ -283,7 +264,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
         else:
             gradient = compute_gradient_logistic(y, tx, w)
             loss = compute_loss_logistic(y, tx, w)
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
@@ -299,30 +279,21 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     return w, loss
-<<<<<<< HEAD
-
-def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False):
-    """Returns the weights and loss for the regularized logistic regression using SGD."""
-=======
 def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False, new=False):
-    """return the loss, gradient, and hessian."""
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
+    """Returns the weights and loss for the regularized logistic regression using SGD."""
     w = initial_w
     gamma_0 = gamma
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             # compute gradient, loss and hessian
-<<<<<<< HEAD
             gradient = compute_gradient_logistic(new_y, new_tx, w)
             loss = compute_loss_logistic(y, tx, w)
-=======
             if new:
                 gradient = compute_gradient_logistic_new(y, tx, w)
                 loss = compute_loss_logistic_new(y, tx, w)
             else:
                 gradient = compute_gradient_logistic(y, tx, w)
                 loss = compute_loss_logistic(y, tx, w)
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
             # update w by gradient
@@ -331,15 +302,8 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
                 print("Logistic Regression SGD ({bi}/{ti}): loss={l}".format(
                 bi=n_iter, ti=max_iters - 1, l=loss))
     return w, loss
-
-
-<<<<<<< HEAD
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
-    """Returns the weights and loss for the regularized logistic regression using GD."""
-=======
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new=False):
-    """return the loss, gradient, and hessian."""
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
+    """Returns the weights and loss for the regularized logistic regression using GD."""
     w = initial_w
     gamma_0 = gamma
     losses = []
@@ -347,19 +311,13 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
     ws.append(w)
     w_bar = w
     for n_iter in range(max_iters):
-<<<<<<< HEAD
         # compute gradient and loss
-        loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
-        gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
-=======
-        # compute gradient, loss and hessian
         if new:
             loss = compute_loss_logistic_new(y, tx, w)   + lambda_ * sum(w*w)/2
             gradient = compute_gradient_logistic_new(y, tx, w) + lambda_ * w
         else:
             loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
             gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
->>>>>>> 0d67475bf6e27f91dad5992d3be1ce841b6eb2fc
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
