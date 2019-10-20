@@ -72,6 +72,7 @@ def split_data(x, y, ratio, seed=1):
     # Return both subsets
     return x_shuf[:max_ind], y_shuf[:max_ind], x_shuf[max_ind:], y_shuf[max_ind:]
 def accuracy_ratio(prediction, labels):
+    '''Computes the accuracy ratio between the prediction and the test labels.'''
     mask = (prediction==labels)
     count = np.zeros(len(prediction))
     count[mask]=1
@@ -101,7 +102,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 def build_k_indices(y, k_fold, seed):
-    """build k indices for k-fold."""
+    """Build k indices for k-fold."""
     num_row = y.shape[0]
     interval = int(num_row / k_fold)
     np.random.seed(seed)
@@ -110,12 +111,12 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
     phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
     return phi_off
-def cross_validation(y, x, k_indices, k, lambda_, degree):
-    """return the loss of ridge regression."""
+def cross_validation(y, x, k_indices, k, lambda_, degree, clean=True):
+    """Returns the train and test loss as well as the test accuracy for ridge regression."""
     # get k'th subgroup in test, others in train
     id_test = k_indices[k]
     id_train = k_indices[~(np.arange(k_indices.shape[0]) == k)].reshape(-1)
@@ -123,33 +124,43 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     x_train = x[id_train]
     y_test = y[id_test]
     y_train = y[id_train]
-    # form data with polynomial degree
-    tx_train = build_poly(x_train, degree)
-    tx_test = build_poly(x_test, degree)
+    #Clean
+    if clean:
+        y_train, x_train = clean_data(y_train, x_train)
+        y_test, x_test = clean_data(y_test, x_test)
+    # Standardize
+    x_train_std = standardize(x_train)[0]
+    x_test_std = standardize(x_test)[0]
+    # Define feature matrix
+    tx_train = build_poly(x_train_std, degree)
+    tx_test = build_poly(x_test_std, degree)
     # ridge regression
     weight, loss_tr = ridge_regression(y_train, tx_train, lambda_)
     # calculate the loss for train and test data
     loss_te = compute_loss(y_test, tx_test, weight)
     accuracy = accuracy_ratio(predict_labels(weight, tx_test), y_test)
-
     return loss_tr, loss_te, accuracy
+
 def compute_loss_logistic(y, tx, w):
+    '''Compute the loss for logistic regression.'''
     loss = sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
     return loss
 def sigmoid(t):
     """apply sigmoid function on t."""
     return np.exp(t)/(1 + np.exp(t))
 def compute_gradient_logistic(y, tx, w):
-    """Compute the gradient."""
+    """Compute the gradient for logistic regression loss."""
     return tx.T.dot(sigmoid(tx.dot(w))) - tx.T.dot(y)
 def calculate_hessian(y, tx, w):
-    """return the hessian of the loss function."""
+    """Return the hessian of the loss function."""
     # calculate hessian
     Xw = tx.dot(w)
     sigma_Xw = sigmoid(Xw).reshape(-1)
     S = np.diag(sigma_Xw*(1 - sigma_Xw))
     return tx.T.dot(S).dot(tx)
+
 def add_offset_column(x):
+    '''Add offset column to the data x.'''
     return np.c_[np.ones(x.shape[0]), x]
 
 #ML Implementations
@@ -177,9 +188,9 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma
             print("GD ({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
     return w, loss
+
 def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse', adapt_gamma = False, pr = False, choose_best = False):
     """Stochastic gradient descent algorithm."""
-    # implement stochastic gradient descent
     # Define parameters to store w and loss
     w=initial_w
     gamma_0 = gamma
@@ -187,12 +198,12 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
     losses = []
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
-            # compute gradient and loss
+            # Compute gradient and loss
             gradient = compute_gradient(new_y, new_tx, w, kind=kind)
             loss = compute_loss(new_y, new_tx, w, kind=kind)
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
-            # update w by gradient
+            # Update w by gradient
             w = w - gamma * gradient
             ws.append(w)
             losses.append(compute_loss(y, tx, w))
@@ -205,20 +216,20 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
     return w, loss
     
 def least_squares(y, tx):
-    """calculate the least squares solution."""
+    """Calculate the least squares solution."""
     gram_matrix = tx.T.dot(tx)
     w = np.linalg.solve(gram_matrix, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
 def ridge_regression(y, tx, lambda_):
-    """implement ridge regression."""
+    """Implement ridge regression."""
     gram_matrix = tx.T.dot(tx)
     reg_term = 2*len(y)*lambda_*np.identity(gram_matrix.shape[0])
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
 def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
-    """return the loss, gradient, and hessian."""
+    """Returns the weights and loss for the regularized logistic regression using GD."""
     w = initial_w
     gamma_0 = gamma
     losses = []
@@ -226,7 +237,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
     ws.append(w)
     w_bar = w
     for n_iter in range(max_iters):
-        # compute gradient, loss and hessian
+        # compute gradient
         gradient = compute_gradient_logistic(y, tx, w)
         loss = compute_loss_logistic(y, tx, w)
         # update w by gradient
@@ -244,8 +255,9 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     return w, loss
+
 def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False):
-    """return the loss, gradient, and hessian."""
+    """Returns the weights and loss for the regularized logistic regression using SGD."""
     w = initial_w
     gamma_0 = gamma
     for n_iter in range(max_iters):
@@ -264,7 +276,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
-    """return the loss, gradient, and hessian."""
+    """Returns the weights and loss for the regularized logistic regression using GD."""
     w = initial_w
     gamma_0 = gamma
     losses = []
@@ -272,7 +284,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
     ws.append(w)
     w_bar = w
     for n_iter in range(max_iters):
-        # compute gradient, loss and hessian
+        # compute gradient and loss
         loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
         gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
         # update w by gradient
