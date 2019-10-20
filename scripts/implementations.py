@@ -15,8 +15,11 @@ def clean_data(y, tx, nan_value = -999):
     '''Return clean data.'''
     tx[tx == nan_value] = np.nan
     mask = ~np.isnan(tx).any(axis=1)  #identify rows containing nan_value
-    tx = tx[mask]
-    y = y[mask]
+    tx_nonan = tx[mask]
+    tx_nonan_std = standardize_features(tx_nonan)
+    means = tx_nonan_std[1] 
+    mean_matrix = np.array([means for _ in range(tx.shape[0])])
+    tx[np.isnan(tx)]=mean_matrix[np.isnan(tx)]
     return y, tx
 def standardize(x):
     """Standardize the original data set."""
@@ -150,10 +153,13 @@ def add_offset_column(x):
     return np.c_[np.ones(x.shape[0]), x]
 
 #ML Implementations
-def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma = False, pr = False):
+def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma = False, pr = False, accel = False):
     """Linear regression using Gradient descent algorithm."""
     w = initial_w.astype(float)
     gamma_0 = gamma
+    ws = []
+    ws.append(w)
+    w_bar = w
     for n_iter in range(max_iters):
         # compute gradient and loss
         gradient = compute_gradient(y, tx, w, kind=kind)
@@ -161,7 +167,12 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
-        w = w - gamma * gradient
+        if accel:
+            w = w_bar - gamma * compute_gradient(y, tx, w_bar, kind=kind)
+            w_bar = w + ((n_iter)/(n_iter + 1)) * (w - ws[-1])
+        else:
+            w = w - gamma * gradient
+        ws.append(w)
         if pr == True and n_iter%100 == 0:
             print("GD ({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
@@ -192,6 +203,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
         w = ws[np.argmin(losses)]
         loss = min(losses)
     return w, loss
+    
 def least_squares(y, tx):
     """calculate the least squares solution."""
     gram_matrix = tx.T.dot(tx)
@@ -205,11 +217,14 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
     """return the loss, gradient, and hessian."""
     w = initial_w
     gamma_0 = gamma
     losses = []
+    ws = []
+    ws.append(w)
+    w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
         gradient = compute_gradient_logistic(y, tx, w)
@@ -217,7 +232,11 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
-        w = w - gamma * gradient
+        if accel:
+            w = w_bar - gamma * compute_gradient_logistic(y, tx, w_bar)
+            w_bar = w + ((n_iter)/(n_iter + 1)) * (w - ws[-1])
+        else:
+            w = w - gamma * gradient        
         if pr == True and n_iter%100 == 0:
             print("Logistic Regression GD ({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
@@ -232,7 +251,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             # compute gradient, loss and hessian
-            gradient = compute_gradient_logistic(y, tx, w)
+            gradient = compute_gradient_logistic(new_y, new_tx, w)
             loss = compute_loss_logistic(y, tx, w)
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
@@ -244,11 +263,14 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
     return w, loss
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
     """return the loss, gradient, and hessian."""
     w = initial_w
     gamma_0 = gamma
     losses = []
+    ws = []
+    ws.append(w)
+    w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
         loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
@@ -256,7 +278,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
-        w = w - gamma * gradient
+        if accel:
+            w = w_bar - gamma * compute_gradient_logistic(y, tx, w_bar) + lambda_ * w
+            w_bar = w + ((n_iter)/(n_iter + 1)) * (w - ws[-1])
+        else:
+            w = w - gamma * gradient
         if pr == True and n_iter%100 == 0:
             print(" Regularized Logistic Regression GD ({bi}/{ti}): loss={l}".format(
             bi=n_iter, ti=max_iters - 1, l=loss))
