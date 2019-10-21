@@ -33,5 +33,5 @@ def preprocess(x, y, clean=True, dopca=True, max_comp = 30):
     x_clean, x_mean, x_var = standardize_features(x_clean)
     if dopca:
         x_clean, transform = pca(x_clean, max_comp=max_comp)
-    return y_clean, x_clean
+    return y_clean, x_clean, x_mean, x_var, transform
 
