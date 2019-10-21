@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 from proj1_helpers import *
+from preprocessing import *
 '''
 Implementation functions for various ML algorithms
 '''

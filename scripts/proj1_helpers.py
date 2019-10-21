@@ -2,6 +2,7 @@
 """some helper functions for project 1."""
 import csv
 import numpy as np
+from preprocessing import *
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -87,32 +88,6 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 
-def cross_validation_visualization(lambds, mse_tr, mse_te):
-    """visualization the curves of mse_tr and mse_te."""
-    best_l_err = lambds[np.argmin(mse_te)]
-    print('Best lambda from error: %.2e'%best_l_err)
-    plt.semilogx(lambds, mse_tr, marker=".", color='b', label='train error')
-    plt.semilogx(lambds, mse_te, marker=".", color='r', label='test error')
-    plt.axvline(best_l_err, c = 'g', label = '$\lambda^*_{rmse}=%.1e$'%best_l_err, ls = ':')
-    plt.xlabel("lambda")
-    plt.ylabel("rmse")
-    plt.title("cross validation")
-    plt.legend(loc=0)
-    plt.grid(True)
-    plt.savefig("../results/cross_validation")
-def cross_validation_visualization_accuracy(lambdas, accuracies):
-    """visualization the curves of mse_tr and mse_te."""
-    plt.semilogx(lambdas, accuracies, lw =2, marker = '*', label = 'Accuracy ratio')
-    best_l_acc = lambdas[np.argmax(accuracies)]
-    plt.axvline(best_l_acc, c= 'k', label = '$\lambda^*_{acc}=%.1e$'%best_l_acc, ls = ':')
-    print('Best lambda from accuracy: %.2e'%best_l_acc)
-    plt.xlabel("lambda")
-    plt.ylabel("accuracy")
-    plt.title("cross validation")
-    plt.legend(loc=0)
-    plt.grid(True)
-    plt.savefig("../results/cross_validation_accuracies")
-
 def split_data(x, y, ratio, seed=1):
     """
     Split the dataset based on the split ratio.
@@ -138,30 +113,7 @@ def accuracy_ratio(prediction, labels):
     count[mask]=1
     correct = float(sum(count))
     return correct/len(prediction)
-def standardize(x):
-    """Standardize the original data set."""
-    mean_x = np.mean(x)
-    x = x - mean_x
-    std_x = np.std(x)
-    x = x / std_x
-    return x, mean_x, std_x
-def standardize_features(x):
-    '''Standardize matrix x by feature (column)'''
-    mean = np.mean(x, axis=0)
-    zero_mean=x-mean
-    variance = np.std(zero_mean, axis=0)
-    unit_variance=zero_mean/variance
-    return unit_variance, mean, variance
-def clean_data(y, tx, nan_value = -999):
-    '''Return clean data.'''
-    tx[tx == nan_value] = np.nan
-    mask = ~np.isnan(tx).any(axis=1)  #identify rows containing nan_value
-    tx_nonan = tx[mask]
-    tx_nonan_std = standardize_features(tx_nonan)
-    means = tx_nonan_std[1] 
-    mean_matrix = np.array([means for _ in range(tx.shape[0])])
-    tx[np.isnan(tx)]=mean_matrix[np.isnan(tx)]
-    return y, tx
+
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
