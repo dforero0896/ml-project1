@@ -22,7 +22,7 @@ def clean_data(y, tx, nan_value = -999):
     means = tx_nonan_std[1]
     mean_matrix = np.array([means for _ in range(tx.shape[0])])
     tx[np.isnan(tx)]=mean_matrix[np.isnan(tx)]
-    return y, tx
+    return np.copy(y), tx
 def pca(x, max_comp=30):
     """PCA on the design matrix x.
 
@@ -34,19 +34,21 @@ def pca(x, max_comp=30):
     diagonal2original = np.vstack(eigenvect[:max_comp])
     new_x = (np.linalg.inv(diagonal2original).dot(x.T)).T
     return new_x, diagonal2original
-
 def preprocess(x, y, clean=True, dopca=True, max_comp = 30):
     """Preprocess raw data.
 
     Standardizes data and optionally cleans and/or does pca. Returns cleaned data, design matrix, original mean and standard deviation of x and transformation matrix (if PCA was done else None)."""
-
+    work_x = np.copy(x)
+    work_y = np.copy(y)
     if clean:
-        y_clean, x_clean = clean_data(y, x)
+        y_clean, x_clean = clean_data(work_y, work_x)
     else:
-        y_clean, x_clean = y, x
+        y_clean, x_clean = work_y, work_x
     x_clean, x_mean, x_var = standardize_features(x_clean)
+    print(x_clean.shape)
     if dopca:
         x_clean, transform = pca(x_clean, max_comp=max_comp)
     else:
         transform = None
     return y_clean, x_clean, x_mean, x_var, transform
+
