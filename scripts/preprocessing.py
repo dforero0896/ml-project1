@@ -33,23 +33,29 @@ def pca(x, max_comp=30):
     rank_eigenvals = sorted(eigenvals, reverse=True)
     val_vect_couples = {val:vect for val, vect in zip(eigenvals, eigenvect)}
     rank_eigenvects = [val_vect_couples[val] for val in rank_eigenvals]
-    diagonal2original = np.vstack(eigenvect[:max_comp])
+    diagonal2original = np.vstack(rank_eigenvects)[:,:max_comp]
     new_x = x.dot(diagonal2original)
-    return new_x, diagonal2original
-def preprocess(x, y, clean=True, dopca=True, max_comp = 30):
+    return new_x, diagonal2original, rank_eigenvals
+def preprocess(x, y, clean=True, dopca=True, max_comp = 30, remove_cols = False, cols = None):
     """Preprocess raw data.
 
-    Standardizes data and optionally cleans and/or does pca. Returns cleaned data, design matrix, original mean and standard deviation of x and transformation matrix (if PCA was done else None)."""
+    Standardizes data and optionally cleans and/or does pca and/or removes columns (cols). Returns target, design matrix, original mean and standard deviation of x, transformation matrix and eigenvalues of the covariance matrix (if PCA was done else None)."""
     work_x = np.copy(x)
     work_y = np.copy(y)
+    if remove_cols:
+        if cols != None:
+            work_x = np.delete(work_x, cols[1:], axis=1)
+        else:
+            raise TypeError("No column-to-remove list provided. Please do so or set remove_cols=False")
     if clean:
         y_clean, x_clean = clean_data(work_y, work_x)
     else:
         y_clean, x_clean = work_y, work_x
     x_clean, x_mean, x_var = standardize_features(x_clean)
     if dopca:
-        x_clean, transform = pca(x_clean, max_comp=max_comp)
+        x_clean, transform, eigenvals = pca(x_clean, max_comp=max_comp)
     else:
         transform = None
-    return y_clean, x_clean, x_mean, x_var, transform
+        eigenvals = None
+    return y_clean, x_clean, x_mean, x_var, transform, eigenvals
 
