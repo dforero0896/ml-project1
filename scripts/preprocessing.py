@@ -31,6 +31,8 @@ def pca(x, max_comp=30):
     covariance_matrix = np.cov(x.T)
     eigenvals, eigenvect = np.linalg.eig(covariance_matrix)
     rank_eigenvals = sorted(eigenvals, reverse=True)
+    val_vect_couples = {val:vect for val, vect in zip(eigenvals, eigenvect)}
+    rank_eigenvects = [val_vect_couples[val] for val in rank_eigenvals]
     diagonal2original = np.vstack(eigenvect[:max_comp])
     new_x = (np.linalg.inv(diagonal2original).dot(x.T)).T
     return new_x, diagonal2original
@@ -45,7 +47,6 @@ def preprocess(x, y, clean=True, dopca=True, max_comp = 30):
     else:
         y_clean, x_clean = work_y, work_x
     x_clean, x_mean, x_var = standardize_features(x_clean)
-    print(x_clean.shape)
     if dopca:
         x_clean, transform = pca(x_clean, max_comp=max_comp)
     else:
