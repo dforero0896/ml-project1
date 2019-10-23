@@ -34,7 +34,7 @@ def pca(x, max_comp=30):
     val_vect_couples = {val:vect for val, vect in zip(eigenvals, eigenvect)}
     rank_eigenvects = [val_vect_couples[val] for val in rank_eigenvals]
     diagonal2original = np.vstack(eigenvect[:max_comp])
-    new_x = (np.linalg.inv(diagonal2original).dot(x.T)).T
+    new_x = x.dot(diagonal2original)
     return new_x, diagonal2original
 def preprocess(x, y, clean=True, dopca=True, max_comp = 30):
     """Preprocess raw data.
