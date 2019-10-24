@@ -4,7 +4,7 @@ def standardize_features(x):
     """Standardize matrix x by feature (column).
 
     Returns zero-mean and unit-variance design matrix x, original mean of x and original variance of x."""
-    
+
     mean = np.mean(x, axis=0)
     zero_mean=x-mean
     variance = np.std(zero_mean, axis=0)
@@ -59,3 +59,9 @@ def preprocess(x, y, clean=True, dopca=True, max_comp = 30, remove_cols = False,
         eigenvals = None
     return y_clean, x_clean, x_mean, x_var, transform, eigenvals
 
+def minus_one_2_zero(y):
+    """Transform '-1' labels into '0' for logistic regression."""
+
+    y_log = np.copy(y)
+    y_log[y == -1] = 0
+    return y_log
