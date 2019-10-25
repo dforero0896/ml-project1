@@ -2,9 +2,9 @@
 import numpy as np
 from proj1_helpers import *
 from preprocessing import *
-'''
+"""
 Implementation functions for various ML algorithms
-'''
+"""
 #Miscellaneous functions
 
 def compute_loss(y, tx, w, kind='mse'):
