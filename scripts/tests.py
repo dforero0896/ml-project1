@@ -202,7 +202,7 @@ def cross_validation_demo(x,
 
     Iterates over 10 lambdas 1e-7 to 1e-3 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
     print('Using method %s' % method.__name__)
-    lambdas = np.logspace(-7, 3, 10)
+    lambdas = np.logspace(-7, 0, 10)
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     # define lists to store the loss of training data and test data

@@ -96,7 +96,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma
         gradient = compute_gradient(y, tx, w, kind=kind)
         loss = compute_loss(y, tx, w, kind=kind)
         if np.isinf(loss):
-            raise ValueError("Infinite loss, exiting.")
+            print("Infinite loss, exiting.")
             break
         # update w by gradient
         if adapt_gamma:
@@ -129,7 +129,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
             gradient = compute_gradient(new_y, new_tx, w, kind=kind)
             loss = compute_loss(new_y, new_tx, w, kind=kind)
             if np.isinf(loss):
-                raise ValueError("Infinite loss, exiting.")
+                print("Infinite loss, exiting.")
                 break
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
@@ -186,7 +186,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
             gradient = compute_gradient_logistic(y, tx, w)
             loss = compute_loss_logistic(y, tx, w)
         if np.isinf(loss):
-            raise ValueError("Infinite loss, exiting.")
+            print("Infinite loss, exiting.")
             break
         # update w by gradient
         if adapt_gamma:
@@ -222,7 +222,7 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
                 gradient = compute_gradient_logistic(new_y, new_tx, w)
                 loss = compute_loss_logistic(y, tx, w)
             if np.isinf(loss):
-                raise ValueError("Infinite loss, exiting.")
+                print("Infinite loss, exiting.")
                 break
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
@@ -256,7 +256,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
             loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
             gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
         if np.isinf(loss):
-            raise ValueError("Infinite loss, exiting.")
+            print("Infinite loss, exiting.")
             break
         # update w by gradient
         if adapt_gamma:
