@@ -36,7 +36,7 @@ args_gd = {
 args_sgd = {
     'initial_w':w_init,
     'batch_size':batch_size,
-    'max_iter':max_iter_sgd,
+    'max_iters':max_iter_sgd,
     'gamma':gamma_sgd,
     'pr':False,
     'adapt_gamma':False,
@@ -80,7 +80,7 @@ def cross_validation(y,
 
     Given a RAW dataset of targets y and predictors x, a list k_indices of
     index partitions, index k to use as test, a method and its necessary
-    arguments, performs k-fold cross validation."""
+    arguments, performs k-fold cross validation. Accepts keyword arguments to preprocessing.preprocess function."""
 
     # get k'th subgroup in test, others in train
     id_test = k_indices[k]
@@ -198,6 +198,9 @@ def cross_validation_demo(x,
                           clean=clean,
                           dopca=dopca,
                           remove_cols=remove_cols):
+    """Perform cross validation on the raw data, given a method and its arguments.
+
+    Iterates over 10 lambdas 1e-7 to 1e-3 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
     print('Using method %s' % method.__name__)
     lambdas = np.logspace(-7, 3, 10)
     # split data in k fold
