@@ -12,15 +12,15 @@ remove_cols = True
 cols = (4, 5, 6, 12, 26, 27, 28)
 max_comp = 30  # For cleaning, and no removing cols
 
-max_iter_gd = 500
+max_iter_gd = 5000
 gamma_gd = 1e-3
-max_iter_sgd = 500
+max_iter_sgd = 5000
 gamma_sgd = 1e-5
-max_iter_lrgd = 500
+max_iter_lrgd = 5000
 gamma_lrgd = 1e-8
 lambda_rlrgd = 50
-gamma_rlrgd = 1e-11
-max_iter_rlrgd = 500
+gamma_rlrgd = 1e-8
+max_iter_rlrgd = 5000
 lambda_rr = 2e-4
 w_init = None
 batch_size=1
@@ -143,13 +143,13 @@ def cross_validation_visualization(results_fname):
     plt.errorbar(lambds,
                  mse_tr,
                  yerr=std_tr,
-                 marker=".",
+                 marker="^",
                  color='b',
                  label='train error')
     plt.errorbar(lambds,
                  mse_te,
                  yerr=std_te,
-                 marker=".",
+                 marker="o",
                  color='r',
                  label='test error')
     plt.axvline(best_l_err,
@@ -211,6 +211,7 @@ def cross_validation_demo(x,
     """Perform cross validation on the raw data, given a method and its arguments.
 
     Iterates over 10 lambdas 1e-7 to 1e0 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
+    
     print('Using method %s' % method.__name__)
     lambdas = np.logspace(lambda_min, lambda_max, 10)
     # split data in k fold

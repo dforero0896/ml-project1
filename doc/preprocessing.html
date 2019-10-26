@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module preprocessing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>preprocessing</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/preprocessing.py">/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/preprocessing.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-build_poly"><strong>build_poly</strong></a>(x, degree)</dt><dd><tt>Polynomial&nbsp;basis&nbsp;functions&nbsp;for&nbsp;input&nbsp;data&nbsp;x,&nbsp;for&nbsp;j=1&nbsp;up&nbsp;to&nbsp;j=degree&nbsp;with&nbsp;<br>
+an&nbsp;additional&nbsp;constant&nbsp;offset&nbsp;column.</tt></dd></dl>
+ <dl><dt><a name="-clean_data"><strong>clean_data</strong></a>(y, tx, nan_value=-999)</dt><dd><tt>Return&nbsp;clean&nbsp;data.<br>
+&nbsp;<br>
+Replaces&nbsp;invalid&nbsp;values&nbsp;(defaults&nbsp;to&nbsp;-999)&nbsp;with&nbsp;the&nbsp;mean&nbsp;values&nbsp;of&nbsp;the&nbsp;column.</tt></dd></dl>
+ <dl><dt><a name="-minus_one_2_zero"><strong>minus_one_2_zero</strong></a>(y)</dt><dd><tt>Transform&nbsp;'-1'&nbsp;labels&nbsp;into&nbsp;'0'&nbsp;for&nbsp;logistic&nbsp;regression.</tt></dd></dl>
+ <dl><dt><a name="-pca"><strong>pca</strong></a>(x, max_comp=30)</dt><dd><tt>PCA&nbsp;on&nbsp;the&nbsp;design&nbsp;matrix&nbsp;x.<br>
+&nbsp;<br>
+Returns&nbsp;the&nbsp;new&nbsp;design&nbsp;matrix&nbsp;with&nbsp;vectors&nbsp;transformed&nbsp;to&nbsp;eigenspace&nbsp;of&nbsp;covariance&nbsp;matrix&nbsp;and&nbsp;the&nbsp;transformation&nbsp;matrix.</tt></dd></dl>
+ <dl><dt><a name="-preprocess"><strong>preprocess</strong></a>(x, y, clean=True, dopca=True, max_comp=30, remove_cols=False, cols=None)</dt><dd><tt>Preprocess&nbsp;raw&nbsp;data.<br>
+&nbsp;<br>
+Standardizes&nbsp;data&nbsp;and&nbsp;optionally&nbsp;cleans&nbsp;and/or&nbsp;does&nbsp;pca&nbsp;and/or&nbsp;removes&nbsp;columns&nbsp;(cols).&nbsp;Returns&nbsp;target,&nbsp;design&nbsp;matrix,&nbsp;original&nbsp;mean&nbsp;and&nbsp;standard&nbsp;deviation&nbsp;of&nbsp;x,&nbsp;transformation&nbsp;matrix&nbsp;and&nbsp;eigenvalues&nbsp;of&nbsp;the&nbsp;covariance&nbsp;matrix&nbsp;(if&nbsp;PCA&nbsp;was&nbsp;done&nbsp;else&nbsp;None).</tt></dd></dl>
+ <dl><dt><a name="-standardize_features"><strong>standardize_features</strong></a>(x)</dt><dd><tt>Standardize&nbsp;matrix&nbsp;x&nbsp;by&nbsp;feature&nbsp;(column).<br>
+&nbsp;<br>
+Returns&nbsp;zero-mean&nbsp;and&nbsp;unit-variance&nbsp;design&nbsp;matrix&nbsp;x,&nbsp;original&nbsp;mean&nbsp;of&nbsp;x&nbsp;and&nbsp;original&nbsp;variance&nbsp;of&nbsp;x.</tt></dd></dl>
+</td></tr></table>
+</body></html>

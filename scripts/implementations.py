@@ -97,7 +97,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma
         loss = compute_loss(y, tx, w, kind=kind)
         if np.isinf(loss):
             raise ValueError("Infinite loss in least_squares_GD with gamma %.0e, exiting."%gamma)
-            break
+            
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
@@ -130,7 +130,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse'
             loss = compute_loss(new_y, new_tx, w, kind=kind)
             if np.isinf(loss):
                 raise ValueError("Infinite loss in least_squares_SGD with gamma %.0e, exiting."%gamma)
-                break
+                
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
             # update w by gradient
@@ -164,12 +164,11 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
     loss = compute_loss(y, tx, w)
     return w, loss
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new = False):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
     """Linear regression using Gradient Descent on the Logistic Regression objective.
 
     Iteratively compute the model weights given data y, a design matrix tx, an initial condition (on w), a batch size, a maximum of iterations and a step size (gamma); with logistic regression loss. Additional parameters allow for early stopping of iterations when convergence threshold is reached, an adapting step size, output printing each 100 epochs and use of accelerated gradient descent algorithm.
     Returns weights and loss."""
-    # TODO: Check documentation for use of new parameter.
 
     w = initial_w
     gamma_0 = gamma
@@ -179,15 +178,10 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
     w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
-        if new:
-            gradient = compute_gradient_logistic_new(y, tx, w)
-            loss = compute_loss_logistic_new(y, tx, w)
-        else:
-            gradient = compute_gradient_logistic(y, tx, w)
-            loss = compute_loss_logistic(y, tx, w)
+        gradient = compute_gradient_logistic(y, tx, w)
+        loss = compute_loss_logistic(y, tx, w)
         if np.isinf(loss):
             raise ValueError("Infinite loss in logistic_regression with gamma %.0e, exiting."%gamma)
-            break
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
@@ -204,26 +198,21 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, ad
             break
     return w, loss
 
-def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False, new=False):
+def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma = False, pr = False):
     """Linear regression using Stochastic Gradient Descent on the Logistic Regression objective.
 
     Iteratively compute the model weights given data y, a design matrix tx, an initial condition (on w), a batch size, a maximum of iterations and a step size (gamma); with logistic regression loss. Additional parameters allow for an adapting step size and output printing each 100 epochs."""
-    # TODO: Check documentation for use of new parameter.
 
     w = initial_w
     gamma_0 = gamma
     for n_iter in range(max_iters):
         for new_y, new_tx in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             # compute gradient, loss and hessian
-            if new:
-                gradient = compute_gradient_logistic_new(new_y, new_tx, w)
-                loss = compute_loss_logistic_new(y, tx, w)
-            else:
-                gradient = compute_gradient_logistic(new_y, new_tx, w)
-                loss = compute_loss_logistic(y, tx, w)
+            gradient = compute_gradient_logistic(new_y, new_tx, w)
+            loss = compute_loss_logistic(y, tx, w)
             if np.isinf(loss):
                 raise ValueError("Infinite loss in logistic_regression_SGD with gamma %.0e, exiting."%gamma)
-                break
+                
             if adapt_gamma and gamma > 1e-4:
                 gamma = gamma_0/(n_iter + 1)
             # update w by gradient
@@ -234,12 +223,11 @@ def logistic_regression_SGD(y, tx, initial_w, batch_size, max_iters, gamma, adap
     return w, loss
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False, new=False):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
     """Linear regression using Gradient Descent on the Logistic Regression + regularization term objective.
 
     Iteratively compute the model weights given data y, a design matrix tx, an initial condition (on w), a batch size, a maximum of iterations and a step size (gamma); with logistic regression loss with regularization term. Additional parameters allow for early stopping of iterations when convergence threshold is reached, an adapting step size, output printing each 100 epochs and use of accelerated gradient descent algorithm.
     Returns weights and loss."""
-    # TODO: Chech documentation for use of new.
 
     w = initial_w
     gamma_0 = gamma
@@ -249,15 +237,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
     w_bar = w
     for n_iter in range(max_iters):
         # compute gradient, loss and hessian
-        if new:
-            loss = compute_loss_logistic_new(y, tx, w)   + lambda_ * sum(w*w)/2
-            gradient = compute_gradient_logistic_new(y, tx, w) + lambda_ * w
-        else:
-            loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
-            gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
+        loss = compute_loss_logistic(y, tx, w) + lambda_ * sum(w*w)/2
+        gradient = compute_gradient_logistic(y, tx, w) + lambda_ * w
         if np.isinf(loss):
             raise ValueError("Infinite loss in reg_logistic_regression with gamma %.0e, exiting."%gamma)
-            break
+            
         # update w by gradient
         if adapt_gamma:
             gamma = gamma_0/(n_iter + 1)
