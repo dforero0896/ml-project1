@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module tests</title>
+<html><head><title>Python: package tests</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head><body bgcolor="#f0f0f8">
 
@@ -8,64 +8,19 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>tests</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/tests.py">/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/tests.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br>(built-in)</font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="csv.html">csv</a><br>
-</td><td width="25%" valign=top><a href="matplotlib.html">matplotlib</a><br>
-</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
-</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
-</td></tr></table></td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-cross_validation"><strong>cross_validation</strong></a>(y, x, k_indices, k, degree, method, method_args, clean=True, dopca=False, remove_cols=True, stdafter=False)</dt><dd><tt>Perform&nbsp;k-fold&nbsp;cross&nbsp;validation&nbsp;on&nbsp;the&nbsp;set&nbsp;using&nbsp;given&nbsp;method.<br>
-&nbsp;<br>
-Given&nbsp;a&nbsp;RAW&nbsp;dataset&nbsp;of&nbsp;targets&nbsp;y&nbsp;and&nbsp;predictors&nbsp;x,&nbsp;a&nbsp;list&nbsp;k_indices&nbsp;of<br>
-index&nbsp;partitions,&nbsp;index&nbsp;k&nbsp;to&nbsp;use&nbsp;as&nbsp;test,&nbsp;a&nbsp;method&nbsp;and&nbsp;its&nbsp;necessary<br>
-arguments,&nbsp;performs&nbsp;k-fold&nbsp;cross&nbsp;validation.&nbsp;Accepts&nbsp;keyword&nbsp;arguments&nbsp;to&nbsp;preprocessing.preprocess&nbsp;function.</tt></dd></dl>
- <dl><dt><a name="-cross_validation_demo"><strong>cross_validation_demo</strong></a>(x, y, method, method_args, seed=42, degree=1, k_fold=4, lambda_min=-7, lambda_max=0, clean=True, dopca=False, remove_cols=True, stdafter=False)</dt><dd><tt>Perform&nbsp;cross&nbsp;validation&nbsp;on&nbsp;the&nbsp;raw&nbsp;data,&nbsp;given&nbsp;a&nbsp;method&nbsp;and&nbsp;its&nbsp;arguments.<br>
-&nbsp;<br>
-Iterates&nbsp;over&nbsp;10&nbsp;lambdas&nbsp;1e-7&nbsp;to&nbsp;1e0&nbsp;and&nbsp;computes&nbsp;the&nbsp;cross&nbsp;validation&nbsp;for&nbsp;the&nbsp;given&nbsp;method.&nbsp;Plots&nbsp;are&nbsp;displayed&nbsp;if&nbsp;the&nbsp;selected&nbsp;method&nbsp;takes&nbsp;a&nbsp;lambda_&nbsp;argument.&nbsp;Else&nbsp;just&nbsp;does&nbsp;cross&nbsp;validation&nbsp;once.</tt></dd></dl>
- <dl><dt><a name="-cross_validation_visualization"><strong>cross_validation_visualization</strong></a>(results_fname)</dt><dd><tt>Visualization&nbsp;the&nbsp;curves&nbsp;of&nbsp;mse_tr&nbsp;and&nbsp;mse_te.</tt></dd></dl>
- <dl><dt><a name="-cross_validation_visualization_accuracy"><strong>cross_validation_visualization_accuracy</strong></a>(results_fname)</dt><dd><tt>Visualization&nbsp;the&nbsp;accuracy&nbsp;curve.</tt></dd></dl>
-</td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#55aa55">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>args_gd</strong> = {'accel': False, 'adapt_gamma': False, 'gamma': 0.001, 'initial_w': None, 'kind': 'mse', 'max_iters': 5000, 'pr': False}<br>
-<strong>args_lrgd</strong> = {'accel': False, 'adapt_gamma': False, 'gamma': 1e-08, 'initial_w': None, 'max_iters': 5000, 'pr': False}<br>
-<strong>args_lsq</strong> = {}<br>
-<strong>args_rlrgd</strong> = {'accel': False, 'adapt_gamma': False, 'gamma': 1e-08, 'initial_w': None, 'lambda_': 50, 'max_iters': 5000, 'pr': False}<br>
-<strong>args_rr</strong> = {'lambda_': 0.0002}<br>
-<strong>args_sgd</strong> = {'adapt_gamma': False, 'batch_size': 1, 'choose_best': True, 'gamma': 1e-05, 'initial_w': None, 'max_iters': 5000, 'pr': False}<br>
-<strong>batch_size</strong> = 1<br>
-<strong>clean</strong> = True<br>
-<strong>cols</strong> = (4, 5, 6, 12, 26, 27, 28)<br>
-<strong>dopca</strong> = False<br>
-<strong>gamma_gd</strong> = 0.001<br>
-<strong>gamma_lrgd</strong> = 1e-08<br>
-<strong>gamma_rlrgd</strong> = 1e-08<br>
-<strong>gamma_sgd</strong> = 1e-05<br>
-<strong>lambda_rlrgd</strong> = 50<br>
-<strong>lambda_rr</strong> = 0.0002<br>
-<strong>max_comp</strong> = 30<br>
-<strong>max_iter_gd</strong> = 5000<br>
-<strong>max_iter_lrgd</strong> = 5000<br>
-<strong>max_iter_rlrgd</strong> = 5000<br>
-<strong>max_iter_sgd</strong> = 5000<br>
-<strong>remove_cols</strong> = True<br>
-<strong>w_init</strong> = None</td></tr></table>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="tests.test_extra.html"><strong>test_extra</strong>&nbsp;(package)</a><br>
+<a href="tests.test_level1.html"><strong>test_level1</strong>&nbsp;(package)</a><br>
+</td><td width="25%" valign=top><a href="tests.test_level2.html"><strong>test_level2</strong>&nbsp;(package)</a><br>
+<a href="tests.test_level3.html"><strong>test_level3</strong>&nbsp;(package)</a><br>
+</td><td width="25%" valign=top><a href="tests.test_level4.html"><strong>test_level4</strong>&nbsp;(package)</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table>
 </body></html>

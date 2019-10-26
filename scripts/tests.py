@@ -112,7 +112,6 @@ def cross_validation(y,
         tx_test[:,1:], _, _ = standardize_features(tx_test[:,1:])
     if 'initial_w' in method_args:
         method_args['initial_w'] = np.zeros(tx_test.shape[1])
-    # ridge regression
     if method.__name__ == 'logistic_regression' or method.__name__ == 'reg_logistic_regression':
         y_train = minus_one_2_zero(y_train)
         y_test_loss = minus_one_2_zero(y_test)
@@ -211,7 +210,7 @@ def cross_validation_demo(x,
     """Perform cross validation on the raw data, given a method and its arguments.
 
     Iterates over 10 lambdas 1e-7 to 1e0 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
-    
+
     print('Using method %s' % method.__name__)
     lambdas = np.logspace(lambda_min, lambda_max, 10)
     # split data in k fold

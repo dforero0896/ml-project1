@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module proj1_helpers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>proj1_helpers</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/proj1_helpers.py">/home/daniel/gdrive/EPFL/2019-2020/MachineLearning/Project/ml-project1/scripts/proj1_helpers.py</a></font></td></tr></table>
+    <p><tt>some&nbsp;helper&nbsp;functions&nbsp;for&nbsp;project&nbsp;1.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="csv.html">csv</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-accuracy_ratio"><strong>accuracy_ratio</strong></a>(prediction, labels)</dt><dd><tt>Computes&nbsp;the&nbsp;accuracy&nbsp;ratio&nbsp;of&nbsp;a&nbsp;prediction&nbsp;given&nbsp;the&nbsp;real&nbsp;labels.</tt></dd></dl>
+ <dl><dt><a name="-batch_iter"><strong>batch_iter</strong></a>(y, tx, batch_size, num_batches=1, shuffle=True)</dt><dd><tt>Generate&nbsp;a&nbsp;minibatch&nbsp;iterator&nbsp;for&nbsp;a&nbsp;dataset.<br>
+&nbsp;<br>
+Takes&nbsp;as&nbsp;input&nbsp;two&nbsp;iterables&nbsp;(here&nbsp;the&nbsp;output&nbsp;desired&nbsp;values&nbsp;'y'&nbsp;and&nbsp;the&nbsp;input&nbsp;data&nbsp;'tx')<br>
+Outputs&nbsp;an&nbsp;iterator&nbsp;which&nbsp;gives&nbsp;mini-batches&nbsp;of&nbsp;`batch_size`&nbsp;matching&nbsp;elements&nbsp;from&nbsp;`y`&nbsp;and&nbsp;`tx`.<br>
+Data&nbsp;can&nbsp;be&nbsp;randomly&nbsp;shuffled&nbsp;to&nbsp;avoid&nbsp;ordering&nbsp;in&nbsp;the&nbsp;original&nbsp;data&nbsp;messing&nbsp;with&nbsp;the&nbsp;randomness&nbsp;of&nbsp;the&nbsp;minibatches.<br>
+Example&nbsp;of&nbsp;use&nbsp;:<br>
+for&nbsp;minibatch_y,&nbsp;minibatch_tx&nbsp;in&nbsp;<a href="#-batch_iter">batch_iter</a>(y,&nbsp;tx,&nbsp;32):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;DO-SOMETHING&gt;</tt></dd></dl>
+ <dl><dt><a name="-build_k_indices"><strong>build_k_indices</strong></a>(y, k_fold, seed)</dt><dd><tt>Build&nbsp;k&nbsp;indices&nbsp;for&nbsp;k-fold.<br>
+&nbsp;<br>
+Randomly&nbsp;splits&nbsp;the&nbsp;given&nbsp;data&nbsp;(y)&nbsp;into&nbsp;k_fold&nbsp;partitions&nbsp;according&nbsp;to&nbsp;given&nbsp;seed.</tt></dd></dl>
+ <dl><dt><a name="-create_csv_submission"><strong>create_csv_submission</strong></a>(ids, y_pred, name)</dt><dd><tt>Creates&nbsp;an&nbsp;output&nbsp;file&nbsp;in&nbsp;csv&nbsp;format&nbsp;for&nbsp;submission&nbsp;to&nbsp;kaggle<br>
+&nbsp;<br>
+Arguments:&nbsp;ids&nbsp;(event&nbsp;ids&nbsp;associated&nbsp;with&nbsp;each&nbsp;prediction)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_pred&nbsp;(predicted&nbsp;class&nbsp;labels)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(string&nbsp;name&nbsp;of&nbsp;.csv&nbsp;output&nbsp;file&nbsp;to&nbsp;be&nbsp;created)</tt></dd></dl>
+ <dl><dt><a name="-load_csv_data"><strong>load_csv_data</strong></a>(data_path, sub_sample=False)</dt><dd><tt>Loads&nbsp;data&nbsp;and&nbsp;returns&nbsp;y&nbsp;(class&nbsp;labels),&nbsp;tX&nbsp;(features)&nbsp;and&nbsp;ids&nbsp;(event&nbsp;ids)</tt></dd></dl>
+ <dl><dt><a name="-predict_labels"><strong>predict_labels</strong></a>(weights, data)</dt><dd><tt>Generates&nbsp;class&nbsp;predictions&nbsp;given&nbsp;weights,&nbsp;and&nbsp;a&nbsp;test&nbsp;data&nbsp;matrix</tt></dd></dl>
+ <dl><dt><a name="-split_data"><strong>split_data</strong></a>(x, y, ratio, seed=1)</dt><dd><tt>Split&nbsp;the&nbsp;dataset&nbsp;(x,&nbsp;y)&nbsp;based&nbsp;on&nbsp;the&nbsp;split&nbsp;ratio.<br>
+Returns:&nbsp;x_train,&nbsp;y_train,&nbsp;x_test,&nbsp;y_test</tt></dd></dl>
+</td></tr></table>
+</body></html>

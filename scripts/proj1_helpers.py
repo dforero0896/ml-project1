@@ -37,8 +37,8 @@ def predict_labels(weights, data):
 
 
 def create_csv_submission(ids, y_pred, name):
-    """
-    Creates an output file in csv format for submission to kaggle
+    """Creates an output file in csv format for submission to kaggle
+    
     Arguments: ids (event ids associated with each prediction)
                y_pred (predicted class labels)
                name (string name of .csv output file to be created)
@@ -51,8 +51,8 @@ def create_csv_submission(ids, y_pred, name):
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id':int(r1),'Prediction':int(r2)})
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
-    """
-    Generate a minibatch iterator for a dataset.
+    """Generate a minibatch iterator for a dataset.
+
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
     Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
     Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
@@ -88,8 +88,7 @@ def build_k_indices(y, k_fold, seed):
     return np.array(k_indices)
 
 def split_data(x, y, ratio, seed=1):
-    """
-    Split the dataset (x, y) based on the split ratio.
+    """Split the dataset (x, y) based on the split ratio.
     Returns: x_train, y_train, x_test, y_test
     """
 

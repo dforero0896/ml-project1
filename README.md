@@ -1,6 +1,57 @@
 # ml-project1
 First project of the ML course at EPFL, Autumn 2019.\
-Various code snippets were taken from the helper functions provided in the course [lab](https://github.com/epfml/ML_course).
+Various code snippets were taken from the helper functions provided in the course [lab](https://github.com/epfml/ML_course).\
+This code implements different machine learning techniques to classify ATLAS events into the classes of `s` (signal) and `b` (background) to a higgs boson production event.
+# Project Outline
+```
+data
+    sample_submission.csv
+    test.csv
+    train.csv
+doc
+    implementations.html
+    preprocessing.html
+    tests.html
+    proj1_helpers.html
+plots
+    nan_fraction.png
+    preprocessing_cases_covmat.png
+    preprocessing_pca_cases_explvar.png
+results
+    *many resulting files from testing. These follow a convention cv_method_d(degree)_cl(clean)_pca(dopca)_rmcols(remove_columns)[stdafter(stdafter)].xxx*
+scripts
+    implementations.ipynb
+    implementations.py
+    plots.ipynb
+    preprocessing.py
+    proj1_helpers.py
+    project1.ipynb
+    run.py
+    tests.py
+
+```
+
+# Modules
+***The documentation for all modules can be accessed from the command line via `pydoc module_name` or is available in `html` format in the `doc` directory***
+
+
+The file `scripts/implementations.py` contains the module `implementations `, which stores the methods to implement: `least_squares_GD, least_squares_SGD, least_squares, ridge_regression, logistic_regression` and `reg_logistic_regression`. The logistic regression algorithms use gradient descent given that the stochastic variant performs slower (though it is implemented for the non-penalized logistic regression).\
+The module also contains fuctions necessary for the implementation of these algorithms like the computation of the loss functions and gradients.
+
+The functions in this module do partially follow the signature provided. Additional parameters are accepted but have default values. See more detailed description in the documentation files for each module.
+
+The file `scripts/preprocessing.py` contains all the functions used for preprocessing the data. 
+
+The file `scripts/run.py` trains our best model and predicts on the `test.csv` data. Output is written in the current directory to avoid errors in the automatic testing of the functions.
+
+The file `scripts/tests.py` contains the functions that implement cross validation and the parameters used in the testing, including the `gamma` values for each method. These can be imported via `from tests import *`. The dictionaries `args_rr`, `args_gd`, `args_sgd `, `args_lsq`, `args_lrgd` and `args_rlrgd` contain the keyword parameters to the respective methods to allow function calls such as:
+```python
+weight, loss_tr = method(y_train, tx_train, **method_args)
+
+```
+This module is built such that it can be imported as usual but could also be run as a standalone script which will perform various tests. This version is suitable for a serial run, which is *not recommended* , given that it would take too much time. The actual tests were run in an embarrasingly parallel fashion.
+
+The file `scripts/proj1_helpers.py` contains some helper functions provided beforehand (to import the data, for instance) as well as some additions of our own.
 
 # The Data
 
@@ -33,3 +84,5 @@ In the end, after thorough testing, we decided to clean (impute), standardize an
 # Model Selection
 To test the different models we performed 4-fold cross validation in all of them (see `tests` module [documentation](doc/tests.html)). The parameters therein were obtained after individual small-scale tests for convergence of the methods when using different values.\
 When necessary (`ridge_regression` and `reg_logistic_regression`), a grid search in the hyperparameter `lambda_` was performed. 
+
+
