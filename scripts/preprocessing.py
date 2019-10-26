@@ -36,6 +36,15 @@ def pca(x, max_comp=30):
     diagonal2original = np.vstack(rank_eigenvects)[:,:max_comp]
     new_x = x.dot(diagonal2original)
     return new_x, diagonal2original, rank_eigenvals
+
+def build_poly(x, degree):
+    """Polynomial basis functions for input data x, for j=1 up to j=degree with 
+    an additional constant offset column."""
+
+    phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
+    phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
+    return phi_off
+
 def preprocess(x, y, clean=True, dopca=True, max_comp = 30, remove_cols = False, cols = None):
     """Preprocess raw data.
 

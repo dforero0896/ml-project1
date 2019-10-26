@@ -7,6 +7,7 @@ from preprocessing import *
 
 def load_csv_data(data_path, sub_sample=False):
     """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
@@ -27,6 +28,7 @@ def load_csv_data(data_path, sub_sample=False):
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
+
     y_pred = np.dot(data, weights)
     y_pred[np.where(y_pred <= 0)] = -1
     y_pred[np.where(y_pred > 0)] = 1
@@ -41,6 +43,7 @@ def create_csv_submission(ids, y_pred, name):
                y_pred (predicted class labels)
                name (string name of .csv output file to be created)
     """
+
     with open(name, 'w') as csvfile:
         fieldnames = ['Id', 'Prediction']
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
@@ -57,6 +60,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
         <DO-SOMETHING>
     """
+
     data_size = len(y)
     if shuffle:
         shuffle_indices = np.random.permutation(np.arange(data_size))
@@ -71,7 +75,10 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 def build_k_indices(y, k_fold, seed):
-    """build k indices for k-fold."""
+    """Build k indices for k-fold.
+    
+    Randomly splits the given data (y) into k_fold partitions according to given seed."""
+
     num_row = y.shape[0]
     interval = int(num_row / k_fold)
     np.random.seed(seed)
@@ -82,9 +89,10 @@ def build_k_indices(y, k_fold, seed):
 
 def split_data(x, y, ratio, seed=1):
     """
-    Split the dataset based on the split ratio.
+    Split the dataset (x, y) based on the split ratio.
     Returns: x_train, y_train, x_test, y_test
     """
+
     # Maximum number of elements to include in the train set
     max_ind = int(ratio * len(x))
     # set seed
@@ -100,14 +108,11 @@ def split_data(x, y, ratio, seed=1):
     return x_shuf[:max_ind], y_shuf[:max_ind], x_shuf[max_ind:], y_shuf[max_ind:]
 #===================================================================================
 def accuracy_ratio(prediction, labels):
+    """Computes the accuracy ratio of a prediction given the real labels."""
+
     mask = (prediction==labels)
     count = np.zeros(len(prediction))
     count[mask]=1
     correct = float(sum(count))
     return correct/len(prediction)
 
-def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    phi = np.array([np.array(x[:,i])**j for j in range(1,degree+1) for i in range(x.shape[1])])
-    phi_off = np.array(np.c_[np.ones(x.shape[0]), phi.T])
-    return phi_off

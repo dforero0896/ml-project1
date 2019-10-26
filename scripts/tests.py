@@ -19,7 +19,7 @@ gamma_sgd = 1e-5
 max_iter_lrgd = 500
 gamma_lrgd = 1e-8
 lambda_rlrgd = 50
-gamma_rlrgd = 1e-8
+gamma_rlrgd = 1e-11
 max_iter_rlrgd = 500
 lambda_rr = 2e-4
 w_init = None
@@ -75,7 +75,8 @@ def cross_validation(y,
                      method_args,
                      clean=clean,
                      dopca=dopca,
-                     remove_cols=remove_cols):
+                     remove_cols=remove_cols, 
+                     stdafter = False):
     """Perform k-fold cross validation on the set using given method.
 
     Given a RAW dataset of targets y and predictors x, a list k_indices of
@@ -106,6 +107,9 @@ def cross_validation(y,
     # form data with polynomial degree
     tx_train = build_poly(x_train, degree)
     tx_test = build_poly(x_test, degree)
+    if stdafter:
+        tx_train[:,1:], _, _ = standardize_features(tx_train[:,1:])
+        tx_test[:,1:], _, _ = standardize_features(tx_test[:,1:])
     if 'initial_w' in method_args:
         method_args['initial_w'] = np.zeros(tx_test.shape[1])
     # ridge regression
@@ -157,6 +161,7 @@ def cross_validation_visualization(results_fname):
     plt.title("Cross validation", fontsize=15)
     plt.legend(loc=0, fontsize=10)
     plt.grid(True)
+    plt.tight_layout()
     plt.savefig(results_fname.replace('.dat', '_loss.png'), dpi=200)
 
 
@@ -185,6 +190,8 @@ def cross_validation_visualization_accuracy(results_fname):
     plt.title("Cross validation", fontsize=15)
     plt.legend(loc=0, fontsize=10)
     plt.grid(True)
+    plt.ylim(0.5, 1)
+    plt.tight_layout()
     plt.savefig(results_fname.replace('.dat', '_acc.png'), dpi=200)
 
 
@@ -195,14 +202,17 @@ def cross_validation_demo(x,
                           seed=42,
                           degree=1,
                           k_fold=4,
+                          lambda_min = -7,
+                          lambda_max = 0,
                           clean=clean,
                           dopca=dopca,
-                          remove_cols=remove_cols):
+                          remove_cols=remove_cols,
+                          stdafter=False):
     """Perform cross validation on the raw data, given a method and its arguments.
 
-    Iterates over 10 lambdas 1e-7 to 1e-3 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
+    Iterates over 10 lambdas 1e-7 to 1e0 and computes the cross validation for the given method. Plots are displayed if the selected method takes a lambda_ argument. Else just does cross validation once."""
     print('Using method %s' % method.__name__)
-    lambdas = np.logspace(-7, 0, 10)
+    lambdas = np.logspace(lambda_min, lambda_max, 10)
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     # define lists to store the loss of training data and test data
@@ -223,7 +233,8 @@ def cross_validation_demo(x,
                                  method_args,
                                  clean=clean,
                                  dopca=dopca,
-                                 remove_cols=remove_cols) for k in range(k_fold)
+                                 remove_cols=remove_cols,
+                                 stdafter=stdafter) for k in range(k_fold)
             ])
             x_validations_mean.append(np.mean(x_validation, axis=0))
             x_validations_std.append(np.std(x_validation, axis=0))
@@ -241,17 +252,19 @@ def cross_validation_demo(x,
                              method_args,
                              clean=clean,
                              dopca=dopca,
-                             remove_cols=remove_cols) for k in range(k_fold)
+                             remove_cols=remove_cols,
+                             stdafter=stdafter) for k in range(k_fold)
         ])
         x_validations_mean=np.mean(x_validation, axis=0)
         x_validations_std=np.std(x_validation, axis=0)
         output =[ np.concatenate((np.zeros(1),x_validations_mean,x_validations_std), axis = None)]
 
 
-    outname = '../results/cv_%s_d%i_cl%i_pca%i_rmcols%i.dat' % (
-                method.__name__, degree, int(clean), int(dopca), int(remove_cols))
+    outname = '../results/cv_%s_d%i_cl%i_pca%i_rmcols%i_stdafter%i.dat' % (
+                method.__name__, degree, int(clean), int(dopca), int(remove_cols), int(stdafter))
     np.savetxt(outname, output)
     if 'lambda_' in method_args:
+        plt.figure()
         cross_validation_visualization(outname)
         plt.figure()
         cross_validation_visualization_accuracy(outname)
