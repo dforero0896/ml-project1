@@ -1,6 +1,7 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module implementations</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -31,19 +32,19 @@
 &nbsp;<br>
 Return&nbsp;logistic&nbsp;regression&nbsp;hessian&nbsp;given&nbsp;labels&nbsp;y,<br>
 design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.&nbsp;If&nbsp;labels&nbsp;are&nbsp;1&nbsp;and&nbsp;0.</tt></dd></dl>
- <dl><dt><a name="-compute_gradient"><strong>compute_gradient</strong></a>(y, tx, w, kind='mse')</dt><dd><tt>MSE&nbsp;or&nbsp;MAE&nbsp;loss'&nbsp;gradients.<br>
+ <dl><dt><a name="-compute_gradient"><strong>compute_gradient</strong></a>(y, tx, w, kind<font color="#909090">='mse'</font>)</dt><dd><tt>MSE&nbsp;or&nbsp;MAE&nbsp;loss'&nbsp;gradients.<br>
 &nbsp;<br>
 Return&nbsp;Mean&nbsp;Squared&nbsp;Error&nbsp;(mse)&nbsp;or&nbsp;Mean&nbsp;Absolute&nbsp;Error&nbsp;(mae)&nbsp;gradients<br>
 given&nbsp;labels&nbsp;y,&nbsp;design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.</tt></dd></dl>
  <dl><dt><a name="-compute_gradient_logistic"><strong>compute_gradient_logistic</strong></a>(y, tx, w)</dt><dd><tt>Logistic&nbsp;regression&nbsp;loss'&nbsp;gradient.<br>
 &nbsp;<br>
 Return&nbsp;logistic&nbsp;regression&nbsp;gradient&nbsp;given&nbsp;labels&nbsp;y,<br>
-design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.&nbsp;If&nbsp;labels&nbsp;are&nbsp;1&nbsp;and&nbsp;-1.</tt></dd></dl>
+design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.&nbsp;If&nbsp;labels&nbsp;are&nbsp;1&nbsp;and&nbsp;0.</tt></dd></dl>
  <dl><dt><a name="-compute_gradient_logistic_new"><strong>compute_gradient_logistic_new</strong></a>(y, tx, w)</dt><dd><tt>Logistic&nbsp;regression&nbsp;loss'&nbsp;gradient.<br>
 &nbsp;<br>
 Return&nbsp;logistic&nbsp;regression&nbsp;gradient&nbsp;given&nbsp;labels&nbsp;y,<br>
 design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.&nbsp;If&nbsp;labels&nbsp;are&nbsp;1&nbsp;and&nbsp;-1.</tt></dd></dl>
- <dl><dt><a name="-compute_loss"><strong>compute_loss</strong></a>(y, tx, w, kind='mse')</dt><dd><tt>MSE&nbsp;or&nbsp;MAE&nbsp;loss&nbsp;functions.<br>
+ <dl><dt><a name="-compute_loss"><strong>compute_loss</strong></a>(y, tx, w, kind<font color="#909090">='mse'</font>)</dt><dd><tt>MSE&nbsp;or&nbsp;MAE&nbsp;loss&nbsp;functions.<br>
 &nbsp;<br>
 Return&nbsp;Mean&nbsp;Squared&nbsp;Error&nbsp;(mse)&nbsp;or&nbsp;Mean&nbsp;Absolute&nbsp;Error&nbsp;(mae)&nbsp;loss<br>
 function&nbsp;given&nbsp;labels&nbsp;y,&nbsp;design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&nbsp;w.</tt></dd></dl>
@@ -58,22 +59,22 @@ labels&nbsp;y,&nbsp;design&nbsp;matrix&nbsp;tx&nbsp;and&nbsp;model&nbsp;weights&
  <dl><dt><a name="-least_squares"><strong>least_squares</strong></a>(y, tx)</dt><dd><tt>Calculate&nbsp;the&nbsp;least&nbsp;squares&nbsp;solution.<br>
 &nbsp;<br>
 Returns&nbsp;weights&nbsp;and&nbsp;loss&nbsp;for&nbsp;the&nbsp;linear&nbsp;regression&nbsp;with&nbsp;least&nbsp;squares&nbsp;given&nbsp;data&nbsp;y&nbsp;and&nbsp;design&nbsp;matrix&nbsp;tx.</tt></dd></dl>
- <dl><dt><a name="-least_squares_GD"><strong>least_squares_GD</strong></a>(y, tx, initial_w, max_iters, gamma, kind='mse', adapt_gamma=False, pr=False, accel=False)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;descent&nbsp;algorithm.<br>
+ <dl><dt><a name="-least_squares_GD"><strong>least_squares_GD</strong></a>(y, tx, initial_w, max_iters, gamma, kind<font color="#909090">='mse'</font>, adapt_gamma<font color="#909090">=False</font>, pr<font color="#909090">=False</font>, accel<font color="#909090">=False</font>)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;descent&nbsp;algorithm.<br>
 &nbsp;<br>
 Iteratively&nbsp;compute&nbsp;the&nbsp;model&nbsp;weights&nbsp;given&nbsp;data&nbsp;y,&nbsp;a&nbsp;design&nbsp;matrix&nbsp;tx,&nbsp;an&nbsp;initial&nbsp;condition&nbsp;(on&nbsp;w),&nbsp;a&nbsp;maximum&nbsp;of&nbsp;iterations&nbsp;and&nbsp;a&nbsp;step&nbsp;size&nbsp;(gamma);&nbsp;with&nbsp;either&nbsp;MSE&nbsp;or&nbsp;MAE&nbsp;loss.&nbsp;Additional&nbsp;parameters&nbsp;allow&nbsp;for&nbsp;an&nbsp;adapting&nbsp;step&nbsp;size,&nbsp;output&nbsp;printing&nbsp;each&nbsp;100&nbsp;epochs&nbsp;and&nbsp;use&nbsp;of&nbsp;accelerated&nbsp;gradient&nbsp;descent&nbsp;algorithm.<br>
 Returns&nbsp;weights&nbsp;and&nbsp;loss.</tt></dd></dl>
- <dl><dt><a name="-least_squares_SGD"><strong>least_squares_SGD</strong></a>(y, tx, initial_w, batch_size, max_iters, gamma, kind='mse', adapt_gamma=False, pr=False, choose_best=False)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Stochastic&nbsp;Gradient&nbsp;descent&nbsp;algorithm.<br>
+ <dl><dt><a name="-least_squares_SGD"><strong>least_squares_SGD</strong></a>(y, tx, initial_w, batch_size, max_iters, gamma, kind<font color="#909090">='mse'</font>, adapt_gamma<font color="#909090">=False</font>, pr<font color="#909090">=False</font>, choose_best<font color="#909090">=False</font>)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Stochastic&nbsp;Gradient&nbsp;descent&nbsp;algorithm.<br>
 &nbsp;<br>
 Iteratively&nbsp;compute&nbsp;the&nbsp;model&nbsp;weights&nbsp;given&nbsp;data&nbsp;y,&nbsp;a&nbsp;design&nbsp;matrix&nbsp;tx,&nbsp;an&nbsp;initial&nbsp;condition&nbsp;(on&nbsp;w),&nbsp;a&nbsp;batch&nbsp;size,&nbsp;a&nbsp;maximum&nbsp;of&nbsp;iterations&nbsp;and&nbsp;a&nbsp;step&nbsp;size&nbsp;(gamma);&nbsp;with&nbsp;either&nbsp;MSE&nbsp;or&nbsp;MAE&nbsp;loss.&nbsp;Additional&nbsp;parameters&nbsp;allow&nbsp;for&nbsp;an&nbsp;adapting&nbsp;step&nbsp;size,&nbsp;output&nbsp;printing&nbsp;each&nbsp;100&nbsp;epochs&nbsp;and&nbsp;choosing&nbsp;the&nbsp;weights&nbsp;that&nbsp;registered&nbsp;the&nbsp;smallest&nbsp;loss&nbsp;in&nbsp;the&nbsp;path&nbsp;taken.<br>
 Returns&nbsp;weights&nbsp;and&nbsp;loss.</tt></dd></dl>
- <dl><dt><a name="-logistic_regression"><strong>logistic_regression</strong></a>(y, tx, initial_w, max_iters, gamma, threshold=1e-08, adapt_gamma=False, pr=False, accel=False, new=False)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;objective.<br>
+ <dl><dt><a name="-logistic_regression"><strong>logistic_regression</strong></a>(y, tx, initial_w, max_iters, gamma, threshold<font color="#909090">=1e-08</font>, adapt_gamma<font color="#909090">=False</font>, pr<font color="#909090">=False</font>, accel<font color="#909090">=False</font>)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;objective.<br>
 &nbsp;<br>
 Iteratively&nbsp;compute&nbsp;the&nbsp;model&nbsp;weights&nbsp;given&nbsp;data&nbsp;y,&nbsp;a&nbsp;design&nbsp;matrix&nbsp;tx,&nbsp;an&nbsp;initial&nbsp;condition&nbsp;(on&nbsp;w),&nbsp;a&nbsp;batch&nbsp;size,&nbsp;a&nbsp;maximum&nbsp;of&nbsp;iterations&nbsp;and&nbsp;a&nbsp;step&nbsp;size&nbsp;(gamma);&nbsp;with&nbsp;logistic&nbsp;regression&nbsp;loss.&nbsp;Additional&nbsp;parameters&nbsp;allow&nbsp;for&nbsp;early&nbsp;stopping&nbsp;of&nbsp;iterations&nbsp;when&nbsp;convergence&nbsp;threshold&nbsp;is&nbsp;reached,&nbsp;an&nbsp;adapting&nbsp;step&nbsp;size,&nbsp;output&nbsp;printing&nbsp;each&nbsp;100&nbsp;epochs&nbsp;and&nbsp;use&nbsp;of&nbsp;accelerated&nbsp;gradient&nbsp;descent&nbsp;algorithm.<br>
 Returns&nbsp;weights&nbsp;and&nbsp;loss.</tt></dd></dl>
- <dl><dt><a name="-logistic_regression_SGD"><strong>logistic_regression_SGD</strong></a>(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma=False, pr=False, new=False)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Stochastic&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;objective.<br>
+ <dl><dt><a name="-logistic_regression_SGD"><strong>logistic_regression_SGD</strong></a>(y, tx, initial_w, batch_size, max_iters, gamma, adapt_gamma<font color="#909090">=False</font>, pr<font color="#909090">=False</font>)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Stochastic&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;objective.<br>
 &nbsp;<br>
 Iteratively&nbsp;compute&nbsp;the&nbsp;model&nbsp;weights&nbsp;given&nbsp;data&nbsp;y,&nbsp;a&nbsp;design&nbsp;matrix&nbsp;tx,&nbsp;an&nbsp;initial&nbsp;condition&nbsp;(on&nbsp;w),&nbsp;a&nbsp;batch&nbsp;size,&nbsp;a&nbsp;maximum&nbsp;of&nbsp;iterations&nbsp;and&nbsp;a&nbsp;step&nbsp;size&nbsp;(gamma);&nbsp;with&nbsp;logistic&nbsp;regression&nbsp;loss.&nbsp;Additional&nbsp;parameters&nbsp;allow&nbsp;for&nbsp;an&nbsp;adapting&nbsp;step&nbsp;size&nbsp;and&nbsp;output&nbsp;printing&nbsp;each&nbsp;100&nbsp;epochs.</tt></dd></dl>
- <dl><dt><a name="-reg_logistic_regression"><strong>reg_logistic_regression</strong></a>(y, tx, lambda_, initial_w, max_iters, gamma, threshold=1e-08, adapt_gamma=False, pr=False, accel=False, new=False)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;+&nbsp;regularization&nbsp;term&nbsp;objective.<br>
+ <dl><dt><a name="-reg_logistic_regression"><strong>reg_logistic_regression</strong></a>(y, tx, lambda_, initial_w, max_iters, gamma, threshold<font color="#909090">=1e-08</font>, adapt_gamma<font color="#909090">=False</font>, pr<font color="#909090">=False</font>, accel<font color="#909090">=False</font>)</dt><dd><tt>Linear&nbsp;regression&nbsp;using&nbsp;Gradient&nbsp;Descent&nbsp;on&nbsp;the&nbsp;Logistic&nbsp;Regression&nbsp;+&nbsp;regularization&nbsp;term&nbsp;objective.<br>
 &nbsp;<br>
 Iteratively&nbsp;compute&nbsp;the&nbsp;model&nbsp;weights&nbsp;given&nbsp;data&nbsp;y,&nbsp;a&nbsp;design&nbsp;matrix&nbsp;tx,&nbsp;an&nbsp;initial&nbsp;condition&nbsp;(on&nbsp;w),&nbsp;a&nbsp;batch&nbsp;size,&nbsp;a&nbsp;maximum&nbsp;of&nbsp;iterations&nbsp;and&nbsp;a&nbsp;step&nbsp;size&nbsp;(gamma);&nbsp;with&nbsp;logistic&nbsp;regression&nbsp;loss&nbsp;with&nbsp;regularization&nbsp;term.&nbsp;Additional&nbsp;parameters&nbsp;allow&nbsp;for&nbsp;early&nbsp;stopping&nbsp;of&nbsp;iterations&nbsp;when&nbsp;convergence&nbsp;threshold&nbsp;is&nbsp;reached,&nbsp;an&nbsp;adapting&nbsp;step&nbsp;size,&nbsp;output&nbsp;printing&nbsp;each&nbsp;100&nbsp;epochs&nbsp;and&nbsp;use&nbsp;of&nbsp;accelerated&nbsp;gradient&nbsp;descent&nbsp;algorithm.<br>
 Returns&nbsp;weights&nbsp;and&nbsp;loss.</tt></dd></dl>

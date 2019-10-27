@@ -3,9 +3,14 @@ from proj1_helpers import *
 from preprocessing import *
 from implementations import *
 subsamp = False
-
-y, x, id_ = load_csv_data('../data/train.csv', sub_sample=subsamp)
-y_out_test, x_out_test, id_out_test = load_csv_data('../data/test.csv', sub_sample=subsamp)
+try:
+    y, x, id_ = load_csv_data('train.csv', sub_sample=subsamp)
+    y_out_test, x_out_test, id_out_test = load_csv_data('test.csv', sub_sample=subsamp)
+except IOError as o:
+    import sys
+    print(o)
+    print('Input files not found. Please place test.csv and train.csv in the same directory as run.py and the necessary modules.')
+    sys.exit('Input files not found')
 clean = True # Clean de data
 dopca = False # Do PCA
 remove_cols = False # Remove columns cols
@@ -39,6 +44,6 @@ if stdafter:
 lambda_rr = 1e-4
 w_rr, loss_rr = ridge_regression(y_train, tx_train, lambda_rr)
 rr_prediction = predict_labels(w_rr, tx_test)
-outname = '../results/rr_pred_deg%i_cl%i_pc%i_rmcol%i_stdafter%i.csv'%(degree, clean, dopca, remove_cols, stdafter)
+outname = 'rr_pred_deg%i_cl%i_pc%i_rmcol%i_stdafter%i.csv'%(degree, clean, dopca, remove_cols, stdafter)
 create_csv_submission(id_out_test, predict_labels(w_rr, tx_test) , outname)
 print('Done. Predictions for test data saved in file\n%s'%outname)
