@@ -55,16 +55,19 @@ def compute_loss_logistic(y, tx, w):
 
     Return logistic regression loss (-loglikelihood) function given
     labels y, design matrix tx and model weights w. If labels are 1 and 0."""
+
     loss = np.sum(np.log(1 + np.exp(tx.dot(w)))) - y.T.dot(tx.dot(w))
     return loss
 def sigmoid(t):
     """Apply sigmoid function on t."""
+
     return 1./(1. + np.exp(-t))
 def compute_gradient_logistic(y, tx, w):
     """Logistic regression loss' gradient.
 
     Return logistic regression gradient given labels y,
-    design matrix tx and model weights w. If labels are 1 and -1."""
+    design matrix tx and model weights w. If labels are 1 and 0."""
+
     return tx.T.dot(sigmoid(tx.dot(w))) - tx.T.dot(y)
 def calculate_hessian(y, tx, w):
     """Calculate Hessian matrix for logistic regression loss.
@@ -162,7 +165,7 @@ def ridge_regression(y, tx, lambda_):
     gram_matrix = tx.T.dot(tx)
     reg_term = 2*len(y)*lambda_*np.identity(gram_matrix.shape[0])
     w = np.linalg.solve(gram_matrix + reg_term, tx.T.dot(y))
-    loss = compute_loss(y, tx, w)
+    loss = compute_loss(y, tx, w) + lambda_ * w.dot(w)
     return w, loss
 def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8, adapt_gamma = False, pr = False, accel=False):
     """Linear regression using Gradient Descent on the Logistic Regression objective.

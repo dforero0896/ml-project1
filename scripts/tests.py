@@ -122,6 +122,7 @@ def cross_validation(y,
     weight, loss_tr = method(y_train, tx_train, **method_args)
     # calculate the loss for train and test data
     loss_te = loss_func(y_test_loss, tx_test, weight)
+    loss_tr = loss_func(y_train, tx_train, weight)
     accuracy = accuracy_ratio(predict_labels(weight, tx_test), y_test)
     return loss_tr, loss_te, accuracy
 
