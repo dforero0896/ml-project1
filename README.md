@@ -66,7 +66,8 @@ The following figure shows the fraction of values that are `NaN = -999` in each 
 It is evident that some features have as much as 70% of their content missing. Additionally, we found that the missing values are the same (all related to `PRI jet num < 2`) which introduces high correlations between the data as can be seen below (top left panel).
 ![covmat](plots/preprocessing_cases_covmat.png)
 
-
+## Importing
+When importing the data, the provided function casts the `s` and `b` labels into `1` and `-1`.
 ## Cleaning
 The data was "cleaned" of `NaN` values by imputing with the mean. The correlations are mostly "corrected" by this single process as can be seen in the figure above, top third panel.
 This is done by the function `clean_data`
@@ -79,7 +80,7 @@ We experimented with PCA to extract a set of features that maximised the varianc
 ## Feature expansion
 We performed polynomial feature expansion and added an offset column to the design matrix. The `degree` was chosen based on various tests to be `degree = 10` for the "exact" algorithms and `degree = 2` for the iterative ones. In the latter, we could also have used `degree=10` prodived that we re-standardized the design matrix after the expansion, however, the resulting model was negligibly better than the `degree=2` but was considerably more comutationally expensive. The re-standardization was necessary given that the iterative algorithms yield infinite losses for such high degrees.
 ## Summary of preprocessing
-In the end, after thorough testing, we decided to clean (impute), standardize and expand features up to degrgee 10 for the exact algorithms and up to 2 for the iterative ones.
+In the end, after thorough testing, we decided to clean (impute), standardize and expand features up to degrgee 10 for the exact algorithms and up to 2 for the iterative ones. It is worth noting that for the two logistic regression methods, the labels were cast into `1` and `0` to follow the convention seen in the course lectures. There are functions  `compute_loss_logistic_new` and `compute_gradient_logistic_new` that can handle the original `1` and `-1` labels.
 
 # Model Selection
 To test the different models we performed 4-fold cross validation in all of them (see `tests` module [documentation](doc/tests.html)). The parameters therein were obtained after individual small-scale tests for convergence of the methods when using different values.\
