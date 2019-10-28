@@ -34,25 +34,27 @@ scripts
 # Modules
 ***The documentation for all modules can be accessed from the command line via `pydoc module_name` or is available in `html` format in the `doc` directory***
 
-
+## `implementations`
 The file `scripts/implementations.py` contains the module `implementations `, which stores the methods to implement: `least_squares_GD, least_squares_SGD, least_squares, ridge_regression, logistic_regression` and `reg_logistic_regression`. The logistic regression algorithms use gradient descent given that the stochastic variant performs slower (though it is implemented for the non-penalized logistic regression).\
 The module also contains fuctions necessary for the implementation of these algorithms like the computation of the loss functions and gradients.
 
 The functions in this module do partially follow the signature provided. Additional parameters are accepted but have default values. See more detailed description in the documentation files for each module.
 
+## `preprocessing`
 The file `scripts/preprocessing.py` contains all the functions used for preprocessing the data. 
 
-The file `scripts/run.py` trains our best model and predicts on the `test.csv` data. Output is written in the current directory to avoid errors in the automatic testing of the functions.
-
+## `tests`
 The file `scripts/tests.py` contains the functions that implement cross validation and the parameters used in the testing, including the `gamma` values for each method. These can be imported via `from tests import *`. The dictionaries `args_rr`, `args_gd`, `args_sgd `, `args_lsq`, `args_lrgd` and `args_rlrgd` contain the keyword parameters to the respective methods to allow function calls such as:
 ```python
 weight, loss_tr = method(y_train, tx_train, **method_args)
 
 ```
 This module is built such that it can be imported as usual but could also be run as a standalone script which will perform various tests. This version is suitable for a serial run, which is *not recommended* , given that it would take too much time. The actual tests were run in an embarrasingly parallel fashion.
-
+## `proj1_helpers`
 The file `scripts/proj1_helpers.py` contains some helper functions provided beforehand (to import the data, for instance) as well as some additions of our own.
-
+# Recreating our best submission
+The file `scripts/run.py` trains our best model and predicts on the `test.csv` data (must be placed in the same directory or an exception will be raised). Output is written in the current directory to avoid errors in the automatic testing of the functions. It fits a Ridge Regresion model to the pre-processed (cleaned, standardized and expanded up to degree 10) data with a penalty weight `lambda_ = 1e-4` chosen from out testing. See [plot](results/cv_ridge_regression_d10_cl1_pca0_rmcols0_stdafter0_acc.png).
+![cv_rr_final](results/cv_ridge_regression_d10_cl1_pca0_rmcols0_stdafter0_acc.png)
 # The Data
 
 The data comes from The Higgs boson machine learning challenge, where it was provided by the ATLAS experiment. The full explanation of that challenge and of each of the features is availiable [here](https://higgsml.lal.in2p3.fr/files/2014/04/documentation_v1.8.pdf).\
@@ -66,6 +68,7 @@ The following figure shows the fraction of values that are `NaN = -999` in each 
 It is evident that some features have as much as 70% of their content missing. Additionally, we found that the missing values are the same (all related to `PRI jet num < 2`) which introduces high correlations between the data as can be seen below (top left panel).
 ![covmat](plots/preprocessing_cases_covmat.png)
 
+
 ## Importing
 When importing the data, the provided function casts the `s` and `b` labels into `1` and `-1`.
 ## Cleaning
@@ -74,11 +77,12 @@ This is done by the function `clean_data`
 ## Standardization
 Data is standardized by feature using function `standardize_feature`. Note that standardizing after cleaning yields columns of mostly zeros.
 ## Column removal
-We tested the model removing all but one of the 6 columns with high fraction of missing values, we expect this procedure to allow us to keep the information commonly enconded in the colums and diminish the computational load. This is done by the `preprocess` function. Note that in the final submission this step was *not applied*.
+We tested the model removing all but one of the 6 columns with high fraction of missing values, we expect this procedure to allow us to keep the information commonly enconded in the colums and diminish the computational load. This is done by the `preprocess` function when `remove_cols=True` and `cols!=None`. Note that in the final submission this step was *not applied*.
 ## Principal Component Analysis (PCA)
-We experimented with PCA to extract a set of features that maximised the variance and allowed us to build a model over an orthogonal set of features. However, after testing the model, the performance was unsatisfactory and this too *was not used in the final submission*
+We experimented with PCA to extract a set of projected features that maximised the variance and allowed us to build a model over an orthogonal set of them. PCA dimensionality reduction is supported through the `max_comp` parameter taken by `pca` function, which is called by the `preprocess` function (when `dopca=True`). This parameter defaults to `max_comp=30`, that is, to *not* reducing the dimensionality of the data. Choose `max_comp<30`to use this functionality./
+After testing the model, the performance was unsatisfactory and this too *was not used in the final submission*
 ## Feature expansion
-We performed polynomial feature expansion and added an offset column to the design matrix. The `degree` was chosen based on various tests to be `degree = 10` for the "exact" algorithms and `degree = 2` for the iterative ones. In the latter, we could also have used `degree=10` prodived that we re-standardized the design matrix after the expansion, however, the resulting model was negligibly better than the `degree=2` but was considerably more comutationally expensive. The re-standardization was necessary given that the iterative algorithms yield infinite losses for such high degrees.
+We performed polynomial feature expansion and added an offset column to the design matrix though the function `build_poly`. The `degree` was chosen based on various tests to be `degree = 10` for the "exact" algorithms and `degree = 2` for the iterative ones. In the latter, we could also have used `degree=10` prodived that we re-standardized the design matrix after the expansion (`stdafter=True`). However, the resulting model was negligibly better than the `degree=2` but considerably more computationally expensive (50k iterations in around 18h). The re-standardization was necessary in this case, given that the iterative algorithms yield infinite losses for such high degrees.
 ## Summary of preprocessing
 In the end, after thorough testing, we decided to clean (impute), standardize and expand features up to degrgee 10 for the exact algorithms and up to 2 for the iterative ones. It is worth noting that for the two logistic regression methods, the labels were cast into `1` and `0` to follow the convention seen in the course lectures. There are functions  `compute_loss_logistic_new` and `compute_gradient_logistic_new` that can handle the original `1` and `-1` labels.
 

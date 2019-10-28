@@ -1,6 +1,7 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module proj1_helpers</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -27,7 +28,7 @@
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-accuracy_ratio"><strong>accuracy_ratio</strong></a>(prediction, labels)</dt><dd><tt>Computes&nbsp;the&nbsp;accuracy&nbsp;ratio&nbsp;of&nbsp;a&nbsp;prediction&nbsp;given&nbsp;the&nbsp;real&nbsp;labels.</tt></dd></dl>
- <dl><dt><a name="-batch_iter"><strong>batch_iter</strong></a>(y, tx, batch_size, num_batches=1, shuffle=True)</dt><dd><tt>Generate&nbsp;a&nbsp;minibatch&nbsp;iterator&nbsp;for&nbsp;a&nbsp;dataset.<br>
+ <dl><dt><a name="-batch_iter"><strong>batch_iter</strong></a>(y, tx, batch_size, num_batches<font color="#909090">=1</font>, shuffle<font color="#909090">=True</font>)</dt><dd><tt>Generate&nbsp;a&nbsp;minibatch&nbsp;iterator&nbsp;for&nbsp;a&nbsp;dataset.<br>
 &nbsp;<br>
 Takes&nbsp;as&nbsp;input&nbsp;two&nbsp;iterables&nbsp;(here&nbsp;the&nbsp;output&nbsp;desired&nbsp;values&nbsp;'y'&nbsp;and&nbsp;the&nbsp;input&nbsp;data&nbsp;'tx')<br>
 Outputs&nbsp;an&nbsp;iterator&nbsp;which&nbsp;gives&nbsp;mini-batches&nbsp;of&nbsp;`batch_size`&nbsp;matching&nbsp;elements&nbsp;from&nbsp;`y`&nbsp;and&nbsp;`tx`.<br>
@@ -43,9 +44,9 @@ Randomly&nbsp;splits&nbsp;the&nbsp;given&nbsp;data&nbsp;(y)&nbsp;into&nbsp;k_fol
 Arguments:&nbsp;ids&nbsp;(event&nbsp;ids&nbsp;associated&nbsp;with&nbsp;each&nbsp;prediction)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_pred&nbsp;(predicted&nbsp;class&nbsp;labels)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(string&nbsp;name&nbsp;of&nbsp;.csv&nbsp;output&nbsp;file&nbsp;to&nbsp;be&nbsp;created)</tt></dd></dl>
- <dl><dt><a name="-load_csv_data"><strong>load_csv_data</strong></a>(data_path, sub_sample=False)</dt><dd><tt>Loads&nbsp;data&nbsp;and&nbsp;returns&nbsp;y&nbsp;(class&nbsp;labels),&nbsp;tX&nbsp;(features)&nbsp;and&nbsp;ids&nbsp;(event&nbsp;ids)</tt></dd></dl>
+ <dl><dt><a name="-load_csv_data"><strong>load_csv_data</strong></a>(data_path, sub_sample<font color="#909090">=False</font>)</dt><dd><tt>Loads&nbsp;data&nbsp;and&nbsp;returns&nbsp;y&nbsp;(class&nbsp;labels),&nbsp;tX&nbsp;(features)&nbsp;and&nbsp;ids&nbsp;(event&nbsp;ids)</tt></dd></dl>
  <dl><dt><a name="-predict_labels"><strong>predict_labels</strong></a>(weights, data)</dt><dd><tt>Generates&nbsp;class&nbsp;predictions&nbsp;given&nbsp;weights,&nbsp;and&nbsp;a&nbsp;test&nbsp;data&nbsp;matrix</tt></dd></dl>
- <dl><dt><a name="-split_data"><strong>split_data</strong></a>(x, y, ratio, seed=1)</dt><dd><tt>Split&nbsp;the&nbsp;dataset&nbsp;(x,&nbsp;y)&nbsp;based&nbsp;on&nbsp;the&nbsp;split&nbsp;ratio.<br>
+ <dl><dt><a name="-split_data"><strong>split_data</strong></a>(x, y, ratio, seed<font color="#909090">=1</font>)</dt><dd><tt>Split&nbsp;the&nbsp;dataset&nbsp;(x,&nbsp;y)&nbsp;based&nbsp;on&nbsp;the&nbsp;split&nbsp;ratio.<br>
 Returns:&nbsp;x_train,&nbsp;y_train,&nbsp;x_test,&nbsp;y_test</tt></dd></dl>
 </td></tr></table>
 </body></html>
