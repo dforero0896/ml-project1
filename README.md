@@ -53,8 +53,8 @@ This module is built such that it can be imported as usual but could also be run
 ## `proj1_helpers`
 The file `scripts/proj1_helpers.py` contains some helper functions provided beforehand (to import the data, for instance) as well as some additions of our own.
 # Recreating our best submission
-The file `scripts/run.py` trains our best model and predicts on the `test.csv` data (must be placed in the same directory or an exception will be raised). Output is written in the current directory to avoid errors in the automatic testing of the functions. It fits a Ridge Regresion model to the pre-processed (cleaned, standardized and expanded up to degree 10) data with a penalty weight `lambda_ = 1e-4` chosen from out testing. See [plot](results/cv_ridge_regression_d10_cl1_pca0_rmcols0_stdafter0_acc.png).
-![cv_rr_final](results/cv_ridge_regression_d10_cl1_pca0_rmcols0_stdafter0_acc.png)
+The file `scripts/run.py` trains our best model and predicts on the `test.csv` data (must be placed in the same directory or an exception will be raised). Output is written in the current directory to avoid errors in the automatic testing of the functions. It fits a Ridge Regresion model to the pre-processed (cleaned, standardized and expanded up to degree 10) data with a penalty weight `lambda_ = 1e-4` chosen from out testing. See [plot](plots/accuracy_results.png).
+![cv_rr_final](plots/accuracy_results.png)
 # The Data
 
 The data comes from The Higgs boson machine learning challenge, where it was provided by the ATLAS experiment. The full explanation of that challenge and of each of the features is availiable [here](https://higgsml.lal.in2p3.fr/files/2014/04/documentation_v1.8.pdf).\
